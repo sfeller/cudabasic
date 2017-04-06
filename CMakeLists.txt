@@ -37,13 +37,9 @@ project(cudabasic)
 #Determine Version information
 #Specify version information
 set (MAJOR_VERSION 0)
-set (MINOR_VERSION 2)
+set (MINOR_VERSION 1)
 set (PATCH_VERSION 0)
 set (TWEAK_VERSION 0)
-
-
-
-
 
 #If CPACK is installed, make it an option
 find_program(CPACK_INSTALLED cpack DOC "CPACK executable")
@@ -61,13 +57,14 @@ set(DEST_DIR "$ENV{PWD}/INSTALL")
 
 set(CONFIG_DIR "${DEST_DIR}/etc/aqueti")
 
+add_definitions(-std=c++11)
 if(CMAKE_SIZEOF_VOID_P STREQUAL "8")
   add_definitions(-DBUILD_64_BIT)
 endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR YES)
 
-add_executable(simple simple.c)
+add_executable(simple simple.cpp)
 
 set(CUDA_LIB cuda)
 set(NVVM_LIB nvvm)
@@ -93,7 +90,8 @@ if( MAKE_DEB_PACKAGE )
       set(CPACK_PACKAGE_VENDOR "Aqueti")
       set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Aqueti Inc.")
       set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "Aqueti Tool Library")
-      set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcudart7.5 (>=7.5.18)")
+      set(CPACK_DEBIAN_PACKAGE_RECOMMENDS "nvidia-cuda (>=7.5.18), libnvvm3(>=7.5.18)")
+#      set(CPACK_DEBIAN_PACKAGE_DEPENDS "cuda")
       set(CPACK_PACKAGE_FILE_NAME "${CMAKE_PROJECT_NAME}-${CPACK_PACKAGE_ARCH}")
       set( PACKAGE_FILE "${CMAKE_CURRENT_BINARY_DIR}/${CPACK_PACKAGE_FILE_NAME}.deb")
       set( CPACK_GENERATOR "DEB")
